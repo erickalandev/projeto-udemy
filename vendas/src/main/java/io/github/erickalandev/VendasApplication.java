@@ -20,14 +20,30 @@ public class VendasApplication {
 	@Bean
 	public CommandLineRunner execute() {
 		return args -> {
-			clientes.salvar(new Cliente("Erick Alan"));
-			clientes.salvar(new Cliente("Erick Alan2"));
-			clientes.salvar(new Cliente("Erick Alan3"));
-			clientes.salvar(new Cliente("Erick Alan4"));
+			//CREATE
+			clientes.salvar(new Cliente("teste 1"));
+			clientes.salvar(new Cliente("teste 2"));
+			clientes.salvar(new Cliente("teste 3"));
+			clientes.salvar(new Cliente("teste 3"));
+			clientes.salvar(new Cliente("teste 3"));
+			clientes.salvar(new Cliente("teste 4"));
 			
-			List<Cliente> todosClientes = clientes.obterTodos();
+			System.out.println("//SELECT");
+			clientes.obterTodos().forEach(System.out::println);
+			System.out.println("_____________________________________________");
 			
-			todosClientes.forEach(System.out::println);
+			System.out.println("//UPDATE");
+			System.out.println(clientes.atualizar(new Cliente(2,"teste atualizado")).toString());
+			System.out.println("_____________________________________________");
+			
+			System.out.println("//DELETE");
+			clientes.deletar(3);
+			clientes.obterTodos().forEach(System.out::println);
+			System.out.println("_____________________________________________");
+			
+			System.out.println("//SELECT_BY_NAME");
+			clientes.obterTodosPorNome("3").forEach(System.out::println);
+			System.out.println("_____________________________________________");
 		};
 	}
 
