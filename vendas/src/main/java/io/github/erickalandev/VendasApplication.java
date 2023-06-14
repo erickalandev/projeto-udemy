@@ -44,6 +44,13 @@ public class VendasApplication {
 			System.out.println("//SELECT_BY_NAME");
 			clientes.obterTodosPorNome("3").forEach(System.out::println);
 			System.out.println("_____________________________________________");
+			
+			System.out.println("//DELETE_ALL");
+			clientes.obterTodos().forEach(c -> clientes.deletar(c.getId()));
+			if(clientes.obterTodos().isEmpty()) {
+				System.out.println("Todos deletados!");
+			}
+			System.out.println("_____________________________________________");
 		};
 	}
 
