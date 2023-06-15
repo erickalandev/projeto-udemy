@@ -1,5 +1,7 @@
 package io.github.erickalandev;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,52 +11,37 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import io.github.erickalandev.domain.entity.Cliente;
+import io.github.erickalandev.domain.entity.Pedido;
 import io.github.erickalandev.domain.repository.Clientes;
+import io.github.erickalandev.domain.repository.Pedidos;
 
 @SpringBootApplication
 public class VendasApplication {
 	
 	@Autowired
 	private Clientes clientes;
+
+	@Autowired
+	private Pedidos pedidos;
 	
 	@Bean
 	public CommandLineRunner execute() {
 		return args -> {
 			//CREATE
-			clientes.save(new Cliente("teste 1"));
-			clientes.save(new Cliente("teste 2"));
-			clientes.save(new Cliente("teste 3"));
-			clientes.save(new Cliente("teste 3"));
-			clientes.save(new Cliente("teste 3"));
-			clientes.save(new Cliente("teste 4"));
+			Cliente c = new Cliente("Fulano");
+			clientes.save(c);
 			
-			System.out.println("//SELECT");
-			clientes.findAll().forEach(System.out::println);
-			System.out.println("_____________________________________________");
+			Pedido p = new Pedido();
+			p.setCliente(c);
+			p.setDataPedido( LocalDate.now() );
+			p.setTotal(BigDecimal.valueOf(100.00));
 			
-			System.out.println("//UPDATE");
-			System.out.println(clientes.save(new Cliente(2,"teste atualizado")).toString());
-			System.out.println("_____________________________________________");
+			pedidos.save(p);
 			
-			System.out.println("//DELETE");
-			clientes.deleteById(3);
-			clientes.findAll().forEach(System.out::println);
-			System.out.println("_____________________________________________");
+			System.out.println(clientes.findClienteFetchPedidos(c.getId()).toString());
 			
-			System.out.println("//SELECT_BY_NAME");
-			clientes.findByNomeLike("3").forEach(System.out::println);
-			System.out.println("_____________________________________________");
+			pedidos.findByCliente(c).forEach(System.out::println);
 			
-			System.out.println("//EXISTS_BY_NAME");
-			System.out.println(clientes.existsByNome("teste 3"));
-			System.out.println("_____________________________________________");
-			
-			System.out.println("//DELETE_ALL");
-			clientes.deleteAll();
-			if(clientes.findAll().isEmpty()) {
-				System.out.println("Todos deletados!");
-			}
-			System.out.println("_____________________________________________");
 		};
 	}
 
