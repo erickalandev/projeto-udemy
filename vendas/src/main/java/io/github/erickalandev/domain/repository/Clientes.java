@@ -1,55 +1,20 @@
 package io.github.erickalandev.domain.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import io.github.erickalandev.domain.entity.Cliente;
 
-@Repository
-public class Clientes {
-
-	@Autowired
-	private EntityManager entityManager;
+public interface Clientes extends JpaRepository<Cliente, Integer> {
 	
-	@Transactional
-	public Cliente salvar(Cliente cliente) {
-		entityManager.persist(cliente);
-		return cliente;
-	}
+	@Query("select c from Cliente c where c.nome like %:nome%")//consulta JPQL
+	List<Cliente> findByNomeLike(String nome);
 	
-	@Transactional
-	public Cliente atualizar(Cliente cliente) {
-		entityManager.merge(cliente);
-		return cliente;
-	}
+	@Query(value = "select * from cliente c where c.nome like %:nome%", nativeQuery=true)//consulta SQL nativo
+	void deleteByNome( @Param("nome") String nome);
 	
-	@Transactional
-	public void deletar(Integer id) {
-		Cliente cliente = entityManager.find(Cliente.class, id);
-		entityManager.remove(cliente);
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Cliente> obterTodosPorNome(String nome) {
-		String jpql = "select c from Cliente c where c.nome like :nome";
-		TypedQuery<Cliente> query = entityManager.createQuery(jpql, Cliente.class);
-		query.setParameter("nome", "%" + nome + "%");
-		return query.getResultList();
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Cliente> obterTodos() {
-		return entityManager
-				.createQuery("from Cliente", Cliente.class)
-				.getResultList();
-	}
-	
+	Boolean existsByNome(String nome);
 }
