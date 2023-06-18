@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="cliente")
 public class Cliente {
@@ -23,8 +25,12 @@ public class Cliente {
 	@Column(name="nome", length = 100)
 	private String nome;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente", fetch= FetchType.LAZY)
 	private List<Pedido> pedidos;
+	
+	@Column(name="cpf", length = 11)
+	private String cpf;
 	
 	public Cliente(){ }
 	
@@ -50,15 +56,19 @@ public class Cliente {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
-	
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", pedidos=" + pedidos + "]";
