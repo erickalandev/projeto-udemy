@@ -1,4 +1,4 @@
-package io.github.erickalandev.domain.controller;
+package io.github.erickalandev.rest.controller;
 
 import java.util.List;
 
