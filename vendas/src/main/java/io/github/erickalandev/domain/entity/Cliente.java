@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -24,14 +26,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="cliente")
-public class Cliente {
+public class Cliente { 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
 	
-	@NotEmpty( message = "O campo nome e obrigatorio ")
+	@NotEmpty( message = "O campo nome do cliente e obrigatorio ")
 	@Column(name="nome", length = 100)
 	private String nome;
 	
@@ -40,6 +42,8 @@ public class Cliente {
 	private List<Pedido> pedidos;
 	
 	@Column(name="cpf", length = 11)
+	@NotEmpty( message = "Campo cpf obrigatorio")
+	@CPF( message = "Numero de cpf invalido" )
 	private String cpf;
 	
 	public Cliente(Integer id, String nome) {

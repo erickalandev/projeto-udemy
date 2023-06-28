@@ -2,6 +2,8 @@ package io.github.erickalandev.rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
@@ -38,7 +40,7 @@ public class ProdutoController {
 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Produto save(@RequestBody Produto produto) {
+	public Produto save(@RequestBody @Valid Produto produto) {
 		return produtos.save(produto);
 	}
 
@@ -53,7 +55,7 @@ public class ProdutoController {
 
 	@PutMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void put(@RequestBody Produto produto, @PathVariable Integer id) {
+	public void put(@RequestBody @Valid Produto produto, @PathVariable Integer id) {
 		produtos.findById(id).map(produtoEncontrado -> {
 			produto.setId(produtoEncontrado.getId());
 			return produtos.save(produto);
