@@ -19,12 +19,12 @@ public class PedidoDTO {
 	 * { "cliente": 1, "total": 100, "items": [ { "produto": 1, "quantidade": 1 } ] }
 	 */
 	
-	@NotNull( message = "Informe o codigo do cliente no pedido")
+	@NotNull( message = "{campo.codigo-cliente.obrigatorio}")
 	private Integer cliente;
 	
-	@NotNull( message = "Informe o total do pedido")
+	@NotNull( message = "{campo.total-pedido.obrigatorio}")
 	private BigDecimal total;
 	
-	@NotEmptyList
+	@NotEmptyList( message = "{campo.items-pedido.obrigatorio}")
 	private List<ItemPedidoDto> items;
 }

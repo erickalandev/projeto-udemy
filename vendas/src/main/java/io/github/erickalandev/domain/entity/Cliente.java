@@ -33,7 +33,7 @@ public class Cliente {
 	@Column(name = "id")
 	private Integer id;
 	
-	@NotEmpty( message = "O campo nome do cliente e obrigatorio ")
+	@NotEmpty( message = "{campo.nome.obrigatorio}")
 	@Column(name="nome", length = 100)
 	private String nome;
 	
@@ -42,8 +42,8 @@ public class Cliente {
 	private List<Pedido> pedidos;
 	
 	@Column(name="cpf", length = 11)
-	@NotEmpty( message = "Campo cpf obrigatorio")
-	@CPF( message = "Numero de cpf invalido" )
+	@NotEmpty( message = "{campo.cpf.obrigatorio}")
+	@CPF( message = "{campo.cpf.invalido}" )
 	private String cpf;
 	
 	public Cliente(Integer id, String nome) {
