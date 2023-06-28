@@ -10,6 +10,10 @@ public class ApiErrors {
 	@Getter
 	private List<String> messageErrors;
 	
+	public ApiErrors( List<String> errors ) {
+		this.messageErrors = errors;
+	}
+	
 	public ApiErrors(String messageError) {
 		this.messageErrors = Arrays.asList(messageError);
 	}

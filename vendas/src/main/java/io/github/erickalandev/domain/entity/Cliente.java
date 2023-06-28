@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +31,7 @@ public class Cliente {
 	@Column(name = "id")
 	private Integer id;
 	
+	@NotEmpty( message = "O campo nome e obrigatorio ")
 	@Column(name="nome", length = 100)
 	private String nome;
 	

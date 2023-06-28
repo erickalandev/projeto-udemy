@@ -2,6 +2,7 @@ package io.github.erickalandev.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import io.github.erickalandev.domain.entity.Cliente;
 import io.github.erickalandev.domain.entity.ItemPedido;
 import io.github.erickalandev.domain.entity.Pedido;
 import io.github.erickalandev.domain.entity.Produto;
+import io.github.erickalandev.domain.enums.StatusPedido;
 import io.github.erickalandev.domain.repository.Clientes;
 import io.github.erickalandev.domain.repository.ItensPedidos;
 import io.github.erickalandev.domain.repository.Pedidos;
 import io.github.erickalandev.domain.repository.Produtos;
+import io.github.erickalandev.exception.PedidoNotFoundException;
 import io.github.erickalandev.exception.RegraNegocioException;
 import io.github.erickalandev.rest.dto.ItemPedidoDto;
 import io.github.erickalandev.rest.dto.PedidoDTO;
@@ -40,6 +43,7 @@ public class PedidoServiceImpl implements PedidoService {
 		Pedido pedido = new Pedido();
 		pedido.setCliente(cliente);
 		pedido.setDataPedido(LocalDate.now());
+		pedido.setStatus(StatusPedido.REALIZADO);
 		pedido.setTotal(dto.getTotal());
 		
 		List<ItemPedido> itens = converterItensPedidos(pedido, dto.getItems());
@@ -67,4 +71,20 @@ public class PedidoServiceImpl implements PedidoService {
 							return itemPedidos;
 						}).collect(Collectors.toList());
 	}
+
+	
+	
+	@Override
+	public Optional<Pedido> obterPedidoCompleto(Integer id) {
+		return repository.findByIdFetchItems(id);
+	}
+
+	@Override
+	public void AtualizarStatus(Integer id, StatusPedido status) {
+		repository.findById(id).map( pedido -> {
+			pedido.setStatus(status);
+			return repository.save(pedido);
+		}).orElseThrow( () -> new PedidoNotFoundException());
+	}
+	
 }
