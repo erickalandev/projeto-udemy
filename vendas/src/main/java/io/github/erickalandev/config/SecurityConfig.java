@@ -15,20 +15,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		//Essa forma de criptografia de senha e a mais ideal, pois ela consiste em um metodo randomico
-		//que faz a criptografia sempre ser diferente da anterior
 		return	 new BCryptPasswordEncoder();
 	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// TODO Auto-generated method stub
-		super.configure(auth);
+		auth.inMemoryAuthentication()
+			.passwordEncoder(passwordEncoder())
+			.withUser("Fulano")
+			.password(passwordEncoder().encode("123"))
+			.roles("USER", "ADMIN");
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO Auto-generated method stub
-		super.configure(http);
+		http
+			 .csrf().disable()
+			 .authorizeRequests()
+			 	.antMatchers("/api/clientes/**")
+			 		.hasAnyRole("USER", "ADMIN")
+			 	.antMatchers("/api/produtos/**")
+			 		.hasRole("ADMIN")
+			 	.antMatchers("/api/pedidos/**")
+			 		.hasAnyRole("USER", "ADMIN")
+			 .and()
+			 		.httpBasic();
 	}
 }
