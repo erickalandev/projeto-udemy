@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
@@ -14,19 +15,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder passwordEncoder = new PasswordEncoder() {
-			@Override
-			public String encode( CharSequence charSequence ) {
-				return charSequence + "123";
-			}
-
-			@Override
-			public boolean matches(CharSequence rawPassword, String encodedPassword) {
-				return (rawPassword + "123").equals(encodedPassword);
-			}	
-		};
-		return passwordEncoder;
-		
+		//Essa forma de criptografia de senha e a mais ideal, pois ela consiste em um metodo randomico
+		//que faz a criptografia sempre ser diferente da anterior
+		return	 new BCryptPasswordEncoder();
 	}
 	
 	@Override
