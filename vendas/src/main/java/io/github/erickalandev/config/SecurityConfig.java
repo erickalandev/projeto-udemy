@@ -1,8 +1,8 @@
 package io.github.erickalandev.config;
 
-import java.nio.charset.CharsetEncoder;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,8 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import io.github.erickalandev.service.impl.UsuarioServiceImpl;
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
  
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -20,11 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-			.passwordEncoder(passwordEncoder())
-			.withUser("Fulano")
-			.password(passwordEncoder().encode("123"))
-			.roles("USER", "ADMIN");
+		auth
+			.userDetailsService(usuarioService)
+			.passwordEncoder(passwordEncoder());
 	}
 	
 	@Override
@@ -38,6 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			 		.hasRole("ADMIN")
 			 	.antMatchers("/api/pedidos/**")
 			 		.hasAnyRole("USER", "ADMIN")
+			 	.antMatchers(HttpMethod.POST, "/api/usuarios/**")
+			 		.permitAll()
+			 	.anyRequest()
+			 		.authenticated()
 			 .and()
 			 		.httpBasic();
 	}
