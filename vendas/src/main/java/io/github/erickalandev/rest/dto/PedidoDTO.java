@@ -15,10 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PedidoDTO {
 
-	/*
-	 * { "cliente": 1, "total": 100, "items": [ { "produto": 1, "quantidade": 1 } ] }
-	 */
-	
 	@NotNull( message = "{campo.codigo-cliente.obrigatorio}")
 	private Integer cliente;
 	

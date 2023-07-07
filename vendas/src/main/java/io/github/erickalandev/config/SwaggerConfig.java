@@ -54,7 +54,6 @@ public class SwaggerConfig {
 				"erickalan068@gmail.com");
 	}
 	
-	//fazer autenticacao do token via swagger
 	public ApiKey apiKey() {
 		return new ApiKey("JWT", "Authorization", "header");
 	}

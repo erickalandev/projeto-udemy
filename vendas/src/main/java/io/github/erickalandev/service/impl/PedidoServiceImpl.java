@@ -24,7 +24,7 @@ import io.github.erickalandev.rest.dto.PedidoDTO;
 import io.github.erickalandev.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor //anotacao do lombok onde nao precisa colocar as injecoes de dependencias
+@RequiredArgsConstructor
 @Service
 public class PedidoServiceImpl implements PedidoService {
 

@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@RestController // nao precisa mais usar toda vez a anotation @ResponseBody nas APIs
+@RestController
 @RequestMapping("/api/clientes")
 @Api("Api Clientes")
 public class ClienteController {
@@ -85,10 +85,10 @@ public class ClienteController {
 
 	@GetMapping
 	public List<Cliente> find(Cliente filter) {
-		ExampleMatcher matcher = ExampleMatcher // configuracao de pesquisa
-				.matching() // encontrar clientes
-				.withIgnoreCase() // ignora caixa alto/baixa na pesquisa
-				.withStringMatcher(StringMatcher.CONTAINING); // faz a consultas igual a do like %info%
+		ExampleMatcher matcher = ExampleMatcher
+				.matching()
+				.withIgnoreCase()
+				.withStringMatcher(StringMatcher.CONTAINING);
 		Example example = Example.of(filter, matcher);
 		return clientes.findAll(example);
 	}

@@ -59,21 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			 		.permitAll()
 			 	.anyRequest()
 			 		.authenticated()
-			 //volta pra raiz do httpSecurity
 			 .and()
-			 		/*definicao para nao criar mais sessoes. cada requisicao vai conter todos os elementos necessarios
-			 		 para acontecer, no caso antes com o httpBasic, a gente tinha um usuarios que ja estava logado na sessao
-			 		 e toda requisicao ja tinha um usuario logado. Mas agora nao tem mais.*/
 			 		.sessionManagement()
-			 		/* O acesso sera stateless agora, fazendo a aplicacao nao ter mais sessao de usuario.
-			 		 * Agora toda requisicao tem que passar o token
-			 		 */
 			 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-					/*esse metodo pode adicionar um filtro(jwtFilter) antes de fazer o contexto de toda aplicacao 
-					  feito pelo filtro do proprio spring security(UsernamePasswordAuthenticationFilter)
-					  o metodo jwtFilter e onde vai criar nosso usuario ai jogamos esse usuario dentro do contexto 
-					  do spring security para ele verificar as autorizacoes de requisicoes la em cima(authorizeRequests()*/
 					.addFilterBefore( jwtFilter(), UsernamePasswordAuthenticationFilter.class );
 	}
 	
