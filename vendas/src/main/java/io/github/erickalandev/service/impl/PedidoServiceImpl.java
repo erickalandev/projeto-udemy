@@ -19,7 +19,7 @@ import io.github.erickalandev.domain.repository.Pedidos;
 import io.github.erickalandev.domain.repository.Produtos;
 import io.github.erickalandev.exception.PedidoNotFoundException;
 import io.github.erickalandev.exception.RegraNegocioException;
-import io.github.erickalandev.rest.dto.ItemPedidoDto;
+import io.github.erickalandev.rest.dto.ItemPedidoDTO;
 import io.github.erickalandev.rest.dto.PedidoDTO;
 import io.github.erickalandev.service.PedidoService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class PedidoServiceImpl implements PedidoService {
 		return pedido;
 	}
 	
-	private List<ItemPedido> converterItensPedidos(Pedido pedido, List<ItemPedidoDto> items) {
+	private List<ItemPedido> converterItensPedidos(Pedido pedido, List<ItemPedidoDTO> items) {
 		if(items.isEmpty()) {
 			throw new RegraNegocioException("Itens dos pedidos nao realizados");
 		}

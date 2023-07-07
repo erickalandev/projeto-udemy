@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import io.github.erickalandev.domain.entity.Usuario;
 import io.github.erickalandev.domain.repository.UsuarioRepository;
+import io.github.erickalandev.exception.SenhaInvalidaException;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService{
@@ -21,6 +22,15 @@ public class UsuarioServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	private UsuarioRepository repository;
+	
+	public UserDetails autenticar( Usuario usuario) {
+		UserDetails user = loadUserByUsername(usuario.getLogin());
+		boolean senhaBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+		if(senhaBatem) {
+			return user;
+		}
+		throw new SenhaInvalidaException();
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

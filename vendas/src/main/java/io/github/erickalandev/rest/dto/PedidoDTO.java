@@ -26,5 +26,5 @@ public class PedidoDTO {
 	private BigDecimal total;
 	
 	@NotEmptyList( message = "{campo.items-pedido.obrigatorio}")
-	private List<ItemPedidoDto> items;
+	private List<ItemPedidoDTO> items;
 }
