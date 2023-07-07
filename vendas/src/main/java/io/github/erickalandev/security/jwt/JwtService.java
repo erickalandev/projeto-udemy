@@ -1,4 +1,4 @@
-package io.github.erickalandev;
+package io.github.erickalandev.security.jwt;
 
 import java.util.Date;
 import java.time.Instant;
@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
+import io.github.erickalandev.VendasApplication;
 import io.github.erickalandev.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
