@@ -21,9 +21,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.github.erickalandev.domain.entity.Cliente;
 import io.github.erickalandev.domain.repository.Clientes;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController // nao precisa mais usar toda vez a anotation @ResponseBody nas APIs
 @RequestMapping("/api/clientes")
+@Api("Api Clientes")
 public class ClienteController {
 
 	private Clientes clientes;
@@ -33,19 +39,34 @@ public class ClienteController {
 	}
 
 	@GetMapping("/{id}")
-	public Cliente getClienteById(@PathVariable Integer id) {
+	@ApiOperation("Obter detalhes de clientes")
+	@ApiResponses({
+					@ApiResponse(code = 200, message = "cliente encontrado"),
+					@ApiResponse(code = 404, message = "cliente nao encontrado")
+				 })
+	public Cliente getClienteById(@PathVariable @ApiParam("id do cliente") Integer id) {
 		return clientes.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@ApiOperation("salvar novo cliente")
+	@ApiResponses({
+					@ApiResponse(code = 201, message = "cliente salvo com sucesso"),
+					@ApiResponse(code = 400, message = "Erro de validacao")
+				 })
 	public Cliente save(@RequestBody @Valid Cliente cliente) {
 		return clientes.save(cliente);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ApiOperation("deletar cliente")
+	@ApiResponses({
+					@ApiResponse(code = 200, message = "cliente deletado!"),
+					@ApiResponse(code = 404, message = "cliente nao encontrado")
+				 })
 	public void delete(@PathVariable Integer id) {
 		clientes.findById(id).map(cliente -> {
 			clientes.delete(cliente);
