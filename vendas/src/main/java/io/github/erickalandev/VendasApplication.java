@@ -10,10 +10,4 @@ public class VendasApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(VendasApplication.class, args);
 	}
-	
-	/*obs.: o SpringBootServletInitializer do tomcat, faz com que o sistema vire uma
-	 * aplicacao web gerando um war. 
-	 * Deixando de ser uma aplicacao standalone onde geravamos um jar.
-	 * */
-
 }
