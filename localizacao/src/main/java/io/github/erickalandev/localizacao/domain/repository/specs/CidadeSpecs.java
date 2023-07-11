@@ -13,11 +13,20 @@ public abstract class CidadeSpecs {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nome"), nome);//pegando o atributo nome e comparando com o valor do parametro(valor para pesquisar)
 	}
 	
-	public static Specification<Cidade> habitanteSpecification(Integer value) {
+	public static Specification<Cidade> habitanteSpecification(Long value) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("habitantes"), value);//pegando o atributo nome e comparando com o valor do parametro(valor para pesquisar)
 	}
 	
 	public static Specification<Cidade> propertyEqual(String propriedade, Object value) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(propriedade), value); 
 	}
+	
+	public static Specification<Cidade> habitanteBetween(Long min, Long max) {
+		return (root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("habitantes"), min, max);
+	}
+	
+	public static Specification<Cidade> nomeLike(String nome) {
+		return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.get("nome")), "%" + nome + "%".toUpperCase());
+	}
+	
 }

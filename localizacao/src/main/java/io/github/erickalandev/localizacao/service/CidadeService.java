@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import io.github.erickalandev.localizacao.domain.entity.Cidade;
 import io.github.erickalandev.localizacao.domain.repository.CidadeRepository;
@@ -80,6 +81,18 @@ public class CidadeService {
 //		Specification<Cidade> spec = CidadeSpecs.nomeEqual("Sao Paulo").and(CidadeSpecs.habitanteSpecification(1000));
 		Specification<Cidade> spec = CidadeSpecs.propertyEqual("nome", "Sao Paulo");
 		cidadeRepository.findAll(spec).forEach(System.out::println);
+	}
+	
+	public void listarCidadesSpecsFiltroDinamico(Cidade filtro) {
+		// select * from Cidade where 1 = 1 isso representa uma conjuncao
+		Specification<Cidade> specs = Specification.where((root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+		
+		if (StringUtils.hasText(filtro.getNome())) {
+			specs = specs.and(CidadeSpecs.nomeLike(filtro.getNome()));
+		}
+		if (filtro.getHabitantes() != null) {
+			specs = specs.and(CidadeSpecs.habitanteSpecification(filtro.getHabitantes()));
+		}
 	}
 
 }
