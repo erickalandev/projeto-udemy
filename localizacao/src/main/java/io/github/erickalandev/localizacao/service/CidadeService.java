@@ -8,11 +8,13 @@ import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.erickalandev.localizacao.domain.entity.Cidade;
 import io.github.erickalandev.localizacao.domain.repository.CidadeRepository;
+import io.github.erickalandev.localizacao.domain.repository.specs.CidadeSpecs;
 
 @Service
 public class CidadeService {
@@ -71,7 +73,13 @@ public class CidadeService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.STARTING);
 		Example<Cidade> example = Example.of(cidade, exampleMatcher);
 		return cidadeRepository.findAll(example);
-		
+	}
+	
+	public void listarCidadesByNomeSpecification() {
+//		Specification<Cidade> spec = CidadeSpecs.nomeEqual("Sao Paulo");
+//		Specification<Cidade> spec = CidadeSpecs.nomeEqual("Sao Paulo").and(CidadeSpecs.habitanteSpecification(1000));
+		Specification<Cidade> spec = CidadeSpecs.propertyEqual("nome", "Sao Paulo");
+		cidadeRepository.findAll(spec).forEach(System.out::println);
 	}
 
 }
