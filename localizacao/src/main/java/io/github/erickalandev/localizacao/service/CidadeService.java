@@ -1,5 +1,10 @@
 package io.github.erickalandev.localizacao.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,7 +43,7 @@ public class CidadeService {
 		
 		
 		//lista dos nomes paginados
-		Pageable pageable = PageRequest.of(0, 3);
+		Pageable pageable = PageRequest.of(0, 10);//inicial da posicao, quantos registros devem retornar
 		cidadeRepository.findByNomeLike("%or%", pageable).forEach(System.out::println);
 	}
 
@@ -57,6 +62,16 @@ public class CidadeService {
 	public void salvar() {
 		var cidade = new Cidade(1L, "sao paulo", 12396372L);
 		cidadeRepository.save(cidade);
+	}
+	
+	public List<Cidade> filtroDinamico(Cidade cidade) {
+		ExampleMatcher exampleMatcher = ExampleMatcher
+				.matching()
+				.withIgnoreCase("nome")//ignore os casos so pelo nome, mas pode colocar sem e mais de um tbm
+				.withStringMatcher(ExampleMatcher.StringMatcher.STARTING);
+		Example<Cidade> example = Example.of(cidade, exampleMatcher);
+		return cidadeRepository.findAll(example);
+		
 	}
 
 }
