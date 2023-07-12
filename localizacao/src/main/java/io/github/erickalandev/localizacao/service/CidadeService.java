@@ -31,22 +31,16 @@ public class CidadeService {
 	}
 
 	public void listaNomes() {
-		// todos aqui funciona sem camel sensitive, a pesquisa tem que ser igual ao dado
-		// do banco
 		/*
 		 * cidadeRepository.findByNome("Sao Paulo").forEach(System.out::println);
 		 * cidadeRepository.findByNomeStartingWith("Sao").forEach(System.out::println);
 		 * cidadeRepository.findByNomeEndingWith("Paulo").forEach(System.out::println);
 		 * cidadeRepository.findByNomeContaining("Pa").forEach(System.out::println);
-		// o like alem de conter essas pesquisas acima, ele funciona com camel sensitive
 		 * cidadeRepository.findByNomeLike("%e%").forEach(System.out::println);
-		//lista dos nomes ordenado por habitantes do menor para o maior
 		 * cidadeRepository.findByNomeLike("%e%", Sort.by("habitantes")).forEach(System.out::println);
 		 */
 		
-		
-		//lista dos nomes paginados
-		Pageable pageable = PageRequest.of(0, 10);//inicial da posicao, quantos registros devem retornar
+		Pageable pageable = PageRequest.of(0, 10);
 		cidadeRepository.findByNomeLike("%or%", pageable).forEach(System.out::println);
 	}
 	
@@ -57,11 +51,9 @@ public class CidadeService {
 	}
 
 	public void listarCidadesPorQuantidadeHabitantes() {
-		// menor que
 		cidadeRepository.findByHabitantesLessThan(1212323L).forEach(System.out::println);
 		cidadeRepository.findByHabitantesLessThanEqual(1212323L).forEach(System.out::println);
 
-		// maior que
 		cidadeRepository.findByHabitantesGreaterThan(1212323L).forEach(System.out::println);
 		cidadeRepository.findByHabitantesGreaterThanEqual(1212323L).forEach(System.out::println);
 		cidadeRepository.findByHabitantesGreaterThanEqualAndNomeLike(1212323L, "Fortaleza").forEach(System.out::println);
@@ -76,7 +68,7 @@ public class CidadeService {
 	public List<Cidade> filtroDinamico(Cidade cidade) {
 		ExampleMatcher exampleMatcher = ExampleMatcher
 				.matching()
-				.withIgnoreCase("nome")//ignore os casos so pelo nome, mas pode colocar sem e mais de um tbm
+				.withIgnoreCase("nome")
 				.withStringMatcher(ExampleMatcher.StringMatcher.STARTING);
 		Example<Cidade> example = Example.of(cidade, exampleMatcher);
 		return cidadeRepository.findAll(example);
@@ -94,7 +86,6 @@ public class CidadeService {
 	}
 	
 	public void listarCidadesSpecsFiltroDinamico(Cidade filtro) {
-		// select * from Cidade where 1 = 1 isso representa uma conjuncao
 		Specification<Cidade> specs = Specification.where((root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
 		
 		if (StringUtils.hasText(filtro.getNome())) {
