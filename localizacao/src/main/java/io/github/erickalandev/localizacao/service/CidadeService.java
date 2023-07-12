@@ -49,6 +49,12 @@ public class CidadeService {
 		Pageable pageable = PageRequest.of(0, 10);//inicial da posicao, quantos registros devem retornar
 		cidadeRepository.findByNomeLike("%or%", pageable).forEach(System.out::println);
 	}
+	
+	public void listaNomesSqlNativoProjection() {
+		cidadeRepository.findByNomeSqlNativoProjection("Sao Paulo")
+						.stream().map( cidadeProjection -> new Cidade(cidadeProjection.getId(), cidadeProjection.getNome(), null))
+						.forEach(System.out::println);
+	}
 
 	public void listarCidadesPorQuantidadeHabitantes() {
 		// menor que
@@ -76,6 +82,10 @@ public class CidadeService {
 		return cidadeRepository.findAll(example);
 	}
 	
+	public void listaNomesSqlNative() {
+		cidadeRepository.findByNomeLike("Sao Paulo").forEach(System.out::println);
+	}
+	
 	public void listarCidadesByNomeSpecification() {
 //		Specification<Cidade> spec = CidadeSpecs.nomeEqual("Sao Paulo");
 //		Specification<Cidade> spec = CidadeSpecs.nomeEqual("Sao Paulo").and(CidadeSpecs.habitanteSpecification(1000));
@@ -93,6 +103,8 @@ public class CidadeService {
 		if (filtro.getHabitantes() != null) {
 			specs = specs.and(CidadeSpecs.habitanteSpecification(filtro.getHabitantes()));
 		}
+		
+		cidadeRepository.findAll(specs);
 	}
 
 }

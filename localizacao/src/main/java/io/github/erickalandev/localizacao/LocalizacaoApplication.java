@@ -15,7 +15,7 @@ public class LocalizacaoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 //		cidadeService.listaNomes();
-		cidadeService.listarCidadesByNomeSpecification();
+		cidadeService.listaNomesSqlNativoProjection();
 	}
 	
 	public static void main(String[] args) {

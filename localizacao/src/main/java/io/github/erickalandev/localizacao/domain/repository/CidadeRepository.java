@@ -9,12 +9,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import io.github.erickalandev.localizacao.domain.entity.Cidade;
+import io.github.erickalandev.localizacao.domain.repository.projections.CidadeProjections;
 
 public interface CidadeRepository extends JpaRepository<Cidade, Long>, JpaSpecificationExecutor<Cidade> {
 	
 	List<Cidade> findByNome(String nome);
+	
+	//sql nativo
+	@Query(nativeQuery = true, value = "select * from tb_cidade as c where c.nome = :nome")
+	List<Cidade> findByNomeSqlNativo(String nome);
+	
+	//caso o nome do campo seja diferente que o da interface(getId, ou seja, "id") e necessario colocar o alias pra renomear a coluna 
+	//e assim bater o nome certo, caso nao retornaria dado incorreto
+	@Query(nativeQuery = true, value = "select c.id_cidade as id, c.nome from tb_cidade as c where c.nome = :nome")
+	List<CidadeProjections> findByNomeSqlNativoProjection(@Param("nome") String nome);
 	
 	//comeca com a palavra
 	List<Cidade> findByNomeStartingWith(String nome);
